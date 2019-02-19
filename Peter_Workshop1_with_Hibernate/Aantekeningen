@@ -1,0 +1,43 @@
+overleg 02-01-2019
+
+connect als aparte resource
+
+			connection = 0;
+			--> maak opnieuw
+			--> zodra gemaakt
+				connection closed? (isclosed())
+						-> make new connection
+					
+					
+					lazy fetch customer -> toevoegen aan account
+
+
+Overleg 20-12-2018:
++ Hoofdlettersgebruik in sql
+
++ Login factorybuilder werkend maken met exceptions, zonder if
+
++ Log4j in src/main --> resources mapje
+
++ Try with resources (close connection, autoclosable)
+
++ Login hernoemen (bijv dbconnection)
+
++ Dbconnection class singleton maken, (try with resources)
+
++ Login xml alleen 1x, alleen deze loggen
+
++ DAO is voor CRUD, niet print. Print in viewer
+
+- Getter nog maken voor DAO's (get all accounts)
+
+- Update -> int met aantal regels die het wijzigd (zie api)
+
+	effected rows komt overeen, als check dat update goed is uitgevoerd
+	-> boolean wel/niet goed.
+	
+- Get return generated keys --> zetten met setter
+
++ Equal methode --> dan ook hash code
+
+- JUnit, equals (true/false) --> bij equals. id wel/niet meenemen. Henk zegt wel, bijv niet adress.

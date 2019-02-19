@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>      
+  <session-factory>
+    <!-- Database connection settings -->
+    <mapping class="domain." />
+    <mapping class="domain.Account" />
+    <mapping class="domain.Customer" />
+    <mapping class="domain.AccountType" />
+     
+  </session-factory>
+</hibernate-configuration>

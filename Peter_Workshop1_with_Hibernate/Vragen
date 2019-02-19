@@ -1,0 +1,84 @@
+25-01-2019
+
+1) Auto increment functie in MongoDb.
+2) Is het nodig om mongo connections te sluiten zoals ik met try with resources deed?
+3) Exception in thread "main" com.mongodb.CommandFailureException: { "serverUsed" : "localhost:27017" , "ok" : 0.0 , "errmsg" : "Unsupported mechanism 'PLAIN' on authentication database 'workshop1'" , "code" : 2 , "codeName" : "BadValue"}
+
+23-01-2019
+
+1) 	Eerder noemde je de mogelijkheid (of gevaar) dat je met 1 query meerdere tables uit de database haalt.
+	Wanneer gebeurd dit, waneer niet. Dit is mij nog niet duidelijk.
+	
+2) Mockito; hoe test je een methode die geen returnvalue heeft? Checken of de juiste methodes zijn aangeroepen?
+
+15-01-2019
+
+1) Ik begin in mijn Controllers vaak een check if (... == null) return; te krijgen. Dit lijkt mij niet heel netjes en beter te kunnen.
+
+14-01-2019
+
+1) Verbeteren voor aanroepen DAO en Controllers?
+	- Nu maak ik steeds een nieuwe aan met bv: AccountController accountController = new AccountController();
+	- Idem voor de Dao's? Is gebruikmaken van static methode een optie?
+2)	Method for reset of the AutoIncrement in DatabaseController doesn't work (atleast for the account table)
+3)  How do I implement a 'safe' login validation?
+
+Notes: 
+- One person can have multiple accounts now.
+- Might add bookmarks and line resets of text.io instead of /n for newView sometime in the future.
+- Check naamconfentie van methode & variablen. Starten nu wisselend wel/niet met hoofdletter
+- Duplicate names (bv. Peter de Graaf) can have multiple accounts.
+
+08-01-2019
+
+1) @BeforeEach werkt niet, heb ik juiste instellingen in de pom?
+2) Bij testReadAccount() id niet meenemen bij equals? Dit omdat input = 0, sql generates, output = generatedId
+3) Tijdsplanning Leertraject Bespreken
+4) 2de contactmomement in de week, niet gericht op vragen maar 
+5) OrderLine test: 	// why do i need ` for order, while not for the other queries?
+
+
+
+02-01-2019
+1) 
+Bij aanmaken van account, idem voor customerId. Heb ik nog een fout staan in de database of probeer ik iets wat niet kan?
+java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`peter_workshop1`.`account`, CONSTRAINT `fk_account_type` FOREIGN KEY (`account_type_id`) REFERENCES `account_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+
+2)
+How do i use createAccount methode without constructing AccoutnDaoImpl? bijv. in AccountDaoImplJUnit
+
+3)
+Ik loop vast bij het maken van de read-DAO's. Wat zou voor mij een startpunt zijn?
+
+4) 
+Controleren singleton van DatabaseConnection en toepassing in DAO's
+
+5)
+Controleren try with resources (bijv in DAO's)
+
+6)...
+
+
+
+21 - 12 - 2018
+
+-Customer_id nodig? Kunnen we niet gewoon alleen id gebruiken?
+
+
+
+20 - 12 - 2018
+-Do we have to initiate a new connection (login.createconnection) for every query?
+
+-What is the use of Setters in our application?	
+	
+-What if column doesnt exist? Now it returns the successful log. We can maybe look into the function EXISTS statement?
+	
+-How do we assign id's? Now its done manual during object creation. Look into auto increment method of SQL.
+	
+-Still have to look into hash-code
+
+-Our price (BigDecimal) round to whole integer
+	
+-What is the function of close() for statement, preparedStatement and connection, resultset ook sluiten.
+	
+-Package by Feature lay-out	
