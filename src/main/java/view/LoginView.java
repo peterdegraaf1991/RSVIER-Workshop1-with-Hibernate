@@ -63,7 +63,7 @@ public class LoginView extends View {
 	public void useSQLOrMongo() {
 		int input = textIO.newIntInputReader().withDefaultValue(1)
 				.withInlinePossibleValues(1)
-				.read("Do you wish to use Hibernate with SQL(1)?");
+				.read("Do you wish to create the database using Hibernate? \nMake sure a SQL schema with name: 'peter_workshop1_hibernate' exists.");
 		new DaoFactory(input);
 	}
 }
