@@ -44,59 +44,15 @@ public class OrderDaoImplHibernate implements OrderDao {
 
 	@Override
 	public Order readOrderById(int id) {
-		Order order = new Order();
-		String query = "SELECT * FROM `order` WHERE id = ?";
-		try (Connection connection = DatabaseConnection.INSTANCE
-				.getConnectionSQL();
-				PreparedStatement preparedStatement = connection
-						.prepareStatement(query)) {
-			preparedStatement.setInt(1, id);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			resultSet.first();
-			order.setId(resultSet.getInt("id"));
-			order.setTotalCost(resultSet.getBigDecimal("total_cost"));
-			order.setDate(resultSet.getTimestamp("date").toLocalDateTime());
-
-			CustomerDao customerDaoImpl = new CustomerDaoImplHibernate();
-			Customer customer = customerDaoImpl.readCustomerById(resultSet
-					.getInt("customer_id"));
-			order.setCustomer(customer);
-
-			// OrderLineDao orderLineDaoImpl = new OrderLineDaoImpl();
-			// List<OrderLine> orderLineList =
-			// orderLineDaoImpl.readOrderLinesOfOrderId(resultSet.getInt("id"));
-			// order.setOrderLines(orderLineList);
+		GenericDao<Order> genericDao = new GenericDao<>(Order.class);
+		Order readOrder = genericDao.readObjectById(id);
+		return readOrder;
 		}
-
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return order;
-	}
 
 	@Override
 	public List<Order> readOrdersOfCustomerId(int customer_id) {
-		List<Order> orderList = new ArrayList<>();
-		String query = "SELECT * FROM `order` WHERE Customer_id = ?";
-		try (Connection connection = DatabaseConnection.INSTANCE
-				.getConnectionSQL();
-				PreparedStatement preparedStatement = connection
-						.prepareStatement(query)) {
-			preparedStatement.setInt(1, customer_id);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				Order order = new Order();
-				order.setId(resultSet.getInt("id"));
-				order.setTotalCost(resultSet.getBigDecimal("total_cost"));
-				order.setDate(resultSet.getTimestamp("date").toLocalDateTime());
-				Customer customer = new Customer();
-				customer.setId(customer_id);
-				order.setCustomer(customer);
-				orderList.add(order);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		GenericDao<Order> genericDao = new GenericDao<>(Order.class);
+		List<Order> orderList = genericDao.readObjectListByColumn("customer_id", customer_id);
 		return orderList;
 	}
 
@@ -120,26 +76,8 @@ public class OrderDaoImplHibernate implements OrderDao {
 
 	@Override
 	public List<Order> readAllOrders() {
-		List<Order> orderList = new ArrayList<>();
-		String query = "SELECT * FROM `order`";
-		try (Connection connection = DatabaseConnection.INSTANCE
-				.getConnectionSQL();
-				PreparedStatement preparedStatement = connection
-						.prepareStatement(query)) {
-			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				Order order = new Order();
-				order.setId(resultSet.getInt("id"));
-				order.setTotalCost(resultSet.getBigDecimal("total_cost"));
-				Customer customer = new Customer();
-				customer.setId(resultSet.getInt("customer_id"));
-				order.setCustomer(customer);
-				order.setDate(resultSet.getTimestamp("date").toLocalDateTime());
-				orderList.add(order);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		GenericDao<Order> genericDao = new GenericDao<>(Order.class);
+		List<Order> orderList = genericDao.readAllObjects(Order.class);
 		return orderList;
 	}
 }

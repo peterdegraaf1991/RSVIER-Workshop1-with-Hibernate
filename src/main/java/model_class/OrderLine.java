@@ -23,7 +23,6 @@ public class OrderLine {
 	private Product product;
 	
 	private int amount;
-	private int orderId;
 
 	@ManyToOne
 	private Order order;
@@ -31,18 +30,10 @@ public class OrderLine {
 	public OrderLine() {
 	}
 
-	public OrderLine(Product product, int amount, int orderId) {
+	public OrderLine(Product product, int amount) {
 		this.product = product;
 		this.amount = amount;
-		this.orderId = orderId;
-	}
-
-	public int getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
+		
 	}
 
 	public int getId() {
@@ -72,7 +63,7 @@ public class OrderLine {
 	@Override
 	public String toString() {
 		return "OrderLine [id=" + id + ", product=" + product + ", amount="
-				+ amount + ", orderId=" + orderId + "]";
+				+ amount;
 	}
 
 	@Override
@@ -80,7 +71,6 @@ public class OrderLine {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + amount;
-		result = prime * result + orderId;
 		result = prime * result + ((product == null) ? 0 : product.hashCode());
 		return result;
 	}
@@ -95,8 +85,6 @@ public class OrderLine {
 			return false;
 		OrderLine other = (OrderLine) obj;
 		if (amount != other.amount)
-			return false;
-		if (orderId != other.orderId)
 			return false;
 		if (product == null) {
 			if (other.product != null)

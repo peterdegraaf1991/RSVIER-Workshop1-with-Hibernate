@@ -1,14 +1,19 @@
 package dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
+import model_class.Customer;
 import controller.*;
 
 public class GenericDao<T> {
@@ -32,7 +37,7 @@ public class GenericDao<T> {
 		entityManager.getTransaction().begin();
 		entityManager.persist(object);
 		entityManager.getTransaction().commit();
-		entityManagerFactory.close();;
+		entityManagerFactory.close();
 		return object;
 	}
 
@@ -43,6 +48,31 @@ public class GenericDao<T> {
 		return object;
 	}
 	
+	public void deleteObjectByColumn(String column, int value) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaDelete<T> criteria = cb.createCriteriaDelete(classToSet);
+		Root<T> i = criteria.from(classToSet);
+		criteria.where(cb.equal(i.get(column), value));
+		entityManager.createQuery(criteria).executeUpdate();
+		entityManagerFactory.close();
+	}
+	
+	public void deleteObjectByColumn(String column, String value) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaDelete<T> criteria = cb.createCriteriaDelete(classToSet);
+		Root<T> i = criteria.from(classToSet);
+		criteria.where(cb.equal(i.get(column), value));
+		entityManager.createQuery(criteria).executeUpdate();
+		entityManagerFactory.close();
+	}
+/*		T object = (T) entityManager.createQuery("SELECT :class FROM TABLE :column = :value ")
+				.setParameter("class", classToSet)
+				.setParameter("column", column)
+				.setParameter("value", value)
+				.getSingleResult();
+				*/
+
+	
 	
 	public T readSingleObjectByColumn(String column, int value) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -51,6 +81,7 @@ public class GenericDao<T> {
 		criteria.select(i).where(cb.equal(i.get(column), value));
 		TypedQuery<T> query = entityManager.createQuery(criteria);
 		T object = query.getSingleResult();
+		entityManagerFactory.close();
 		
 /*		T object = (T) entityManager.createQuery("SELECT :class FROM TABLE :column = :value ")
 				.setParameter("class", classToSet)
@@ -68,25 +99,41 @@ public class GenericDao<T> {
 		criteria.select(i).where(cb.equal(i.get(column), value));
 		TypedQuery<T> query = entityManager.createQuery(criteria);
 		T object = query.getSingleResult();
+		entityManagerFactory.close();
 		return object;
+	}	
 		
-/*		T object = (T) entityManager.createQuery("SELECT a FROM Account a WHERE :column = :value ")
-				.setParameter("class", classToSet)
-				.setParameter("column", column)
-				.setParameter("value", value)
-				.getSingleResult();
-*/
-	}
-	
 	public List<T> readAllObjects(Class<T> type) {
 		
 		    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		    CriteriaQuery<T> criteria = builder.createQuery(type);
 		    criteria.from(type);
 		    List<T> list = entityManager.createQuery(criteria).getResultList();
+		    entityManagerFactory.close();
 		    return list;
 	}
 	
+	public List<T> readObjectListByColumn(String column, String value) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<T> criteria = cb.createQuery(classToSet);
+		Root<T> i = criteria.from(classToSet);
+		criteria.select(i).where(cb.equal(i.get(column), value));
+		TypedQuery<T> query = entityManager.createQuery(criteria);
+		List<T> list = query.getResultList();
+		entityManagerFactory.close();
+		return list;
+	}	
+	
+	public List<T> readObjectListByColumn(String column, int value) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<T> criteria = cb.createQuery(classToSet);
+		Root<T> i = criteria.from(classToSet);
+		criteria.select(i).where(cb.equal(i.get(column), value));
+		TypedQuery<T> query = entityManager.createQuery(criteria);
+		List<T> list = query.getResultList();
+		entityManagerFactory.close();
+		return list;
+	}	
 	public void updateObject(T object) {
 		entityManager.getTransaction().begin();
 		entityManager.merge(object);

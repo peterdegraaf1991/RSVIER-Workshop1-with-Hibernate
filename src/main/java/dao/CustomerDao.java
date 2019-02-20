@@ -16,7 +16,7 @@ public interface CustomerDao {
 
 	public Customer readCustomerById(int id);
 
-	public ArrayList<Customer> readCustomersByLastname(String lastname);
+	public List<Customer> readCustomersByLastname(String lastname);
 
 	public int CustomerNameExists(Customer customer);
 

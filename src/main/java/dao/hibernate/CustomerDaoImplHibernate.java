@@ -38,70 +38,25 @@ public class CustomerDaoImplHibernate implements CustomerDao {
 		genericDao.deleteObject(id);
 	}
 	
-	//Fiddling around with SQL JOIN Queries
 	@Override
 	public Customer readCustomerById(int id) {
-		Customer customer = new Customer();
-		String query = "SELECT * FROM customer LEFT JOIN account ON customer.id = account.customer_id LEFT JOIN account_type ON account.account_type_id = account_type.id WHERE customer.id = ? ";
-		try (Connection connection = DatabaseConnection.INSTANCE
-				.getConnectionSQL();
-				PreparedStatement preparedStatement = connection
-						.prepareStatement(query)) {
-			preparedStatement.setInt(1, id);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			resultSet.first();
-			customer.setId(resultSet.getInt("id"));
-			customer.setFirstname(resultSet.getString("firstname"));
-			customer.setMiddlename(resultSet.getString("middlename"));
-			customer.setSurname(resultSet.getString("surname"));
-			customer.setAccountDescription(resultSet.getString("description"));
-		} catch (SQLException e) {
-			e.printStackTrace();
+		GenericDao<Customer> genericDao = new GenericDao<>(Customer.class);
+		Customer readCustomer = genericDao.readObjectById(id);
+		return readCustomer;
 		}
-		return customer;
-	}
 
-	//Fiddling around with SQL JOIN Queries
 	@Override
-	public ArrayList<Customer> readCustomersByLastname(String lastname) {
-		ArrayList<Customer> listOfCustomers = new ArrayList<>();
-		String query = "SELECT * FROM customer LEFT JOIN account ON customer.id = account.customer_id LEFT JOIN account_type ON account.account_type_id = account_type.id WHERE customer.surname = ? ";
-		try (Connection connection = DatabaseConnection.INSTANCE
-				.getConnectionSQL();
-				PreparedStatement preparedStatement = connection
-						.prepareStatement(query)) {
-			preparedStatement.setString(1, lastname);
-			ResultSet resultSet = preparedStatement.executeQuery();
-
-			while (resultSet.next()) {
-				Customer customer = new Customer();
-				customer.setId(resultSet.getInt("id"));
-				customer.setFirstname(resultSet.getString("firstname"));
-				customer.setMiddlename(resultSet.getString("middlename"));
-				customer.setSurname(resultSet.getString("surname"));
-				customer.setAccountDescription(resultSet.getString("description"));
-				listOfCustomers.add(customer);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return listOfCustomers;
+	public List<Customer> readCustomersByLastname(String lastname) {
+		GenericDao<Customer> genericDao = new GenericDao<>(Customer.class);
+		List<Customer> readCustomerList = genericDao.readObjectListByColumn("lastname",lastname);
+		return readCustomerList;
 	}
 
+	// Wil je normaal niet gebruiken, volgens mij wordt deze ook nooit aangesproken.
 	@Override
 	public void deleteCustomer(String lastname) {
-		String query = "DELETE FROM customer WHERE surname = ?";
-		try (Connection connection = DatabaseConnection.INSTANCE
-				.getConnectionSQL();
-				PreparedStatement preparedStatement = connection
-						.prepareStatement(query,
-								PreparedStatement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setString(1, lastname);
-			preparedStatement.executeUpdate();
-			LOG.info("Person successfully removed");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		GenericDao<Customer> genericDao = new GenericDao<>(Customer.class);
+		genericDao.deleteObjectByColumn("lastname", lastname);
 	}
 
 	public int CustomerNameExists(Customer customer) {
@@ -123,8 +78,6 @@ public class CustomerDaoImplHibernate implements CustomerDao {
 		}
 		return rowCount;
 	}
-
-	//Fiddling around with SQL JOIN Queries
 	@Override
 	public List<Customer> readAllCustomers() {
 		GenericDao<Customer> genericDao = new GenericDao<>(Customer.class);
