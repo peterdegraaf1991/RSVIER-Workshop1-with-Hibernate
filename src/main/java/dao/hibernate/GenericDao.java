@@ -144,7 +144,7 @@ public class GenericDao<T> {
 	public void deleteObject(int id) {
 			entityManager.clear();
 			entityManager.getTransaction().begin();
-			T object = entityManager.find(classToSet, (long)id);
+			T object = entityManager.find(classToSet, id);
 			entityManager.remove(object);
 			entityManager.getTransaction().commit();
 			entityManagerFactory.close();
