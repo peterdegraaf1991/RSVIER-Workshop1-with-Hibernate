@@ -28,7 +28,7 @@ public class OrderLineController {
 				orderLine.setProduct(product);
 				orderLine.setAmount(orderLineView.requestAmount(product
 						.getStock()));
-				orderLine.setOrderId(orderId);
+				orderLine.getOrder().setId(orderId);
 				DaoFactory.getOrderLineDao().createOrderLine(orderLine);
 				System.out.println("OrderLineList is before: " + orderLineList);
 				orderLineList.add(orderLine);
